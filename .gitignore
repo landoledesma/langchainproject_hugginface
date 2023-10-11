@@ -1,6 +1,6 @@
 # Vector database
 chroma_docs
-
+data/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 

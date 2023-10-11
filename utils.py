@@ -1,6 +1,4 @@
 import os
-import sys
-import jsonlines
 import yaml
 from langchain.schema import Document
 
@@ -38,7 +36,7 @@ def create_dir(path:str) -> None:
     Args:
         path (str): Ruta del directorio a crear.
     """
-    if not os.path.exist(path):
+    if not os.path.exists(path):
         os.mkdir(path)
 
 def remove_existing_file(file_path:str) -> None:
