@@ -1,3 +1,9 @@
+import os
+import sys
+import jsonlines
+import yaml
+from langchain.schema import Document
+
 class DocsJSONLLoader:
     """
     Cargador de documentos de documentaciones en formato JSONL.
