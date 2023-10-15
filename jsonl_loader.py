@@ -1,7 +1,4 @@
-import os
-import sys
 import jsonlines
-import yaml
 from langchain.schema import Document
 
 class DocsJSONLLoader:
