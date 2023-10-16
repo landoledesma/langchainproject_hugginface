@@ -45,7 +45,7 @@ def main():
     documents = load_documents(get_file_path())
     embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
 
-    vectorstore_chroma = get_chroma_db(embeddings, documents, "chroma_docs")
+    
 
     console.print(f"[green]Documentos {len(documents)} cargados.[/green]")
     

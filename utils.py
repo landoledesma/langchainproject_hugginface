@@ -58,6 +58,7 @@ def get_query_from_user() -> str:
     """
     try:
         query = input()
+        return query
     except EOFError:
         print("Error:Input no esperado. Intente de nuevo")
-        return get_query_from_user
+        return get_query_from_user()
