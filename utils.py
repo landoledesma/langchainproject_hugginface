@@ -25,7 +25,7 @@ def get_file_path():
     """
     config = load_config()
     root_dir = os.path.dirname(os.path.abspath(__file__))
-    parent_dir = os.path.join(root_dir,"..")
+    parent_dir = os.path.join(root_dir)
 
     return os.path.join(parent_dir,config["jsonl_database_path"])
 

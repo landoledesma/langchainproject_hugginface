@@ -20,4 +20,4 @@ github:
       repo: accelerate
       path: docs/source
 
-jsonl_database_path: data/docs_en_2023_06_29.jsonl
+jsonl_database_path: text_extractor/data/docs.jsonl

@@ -4,20 +4,17 @@ from langchain.vectorstores import Chroma
 from jsonl_loader import DocsJSONLLoader
 from rich.console import Console
 from dotenv import load_dotenv
-from utils import get_file_path,get_query_from_user
+from utils import get_file_path
 import os
 import time 
 
 load_dotenv("token.env")
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
-DATA_PATH = "data/"
-DB_FAISS_PATH = "vectorstore/db_faiss"
-
 console = Console()
 
 recreate_chroma_db = False
-chat_type = "memory_chat"
+
 
 def load_documents(file_path:str):
     loader = DocsJSONLLoader(file_path)
@@ -32,7 +29,7 @@ def load_documents(file_path:str):
     return text_splitter.split_documents(data)
 
 def get_chroma_db(embeddings,documents,path):
-
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
     if recreate_chroma_db:
         console.print("Recreando CHROMA DB")
         return Chroma.from_documents(
@@ -44,4 +41,13 @@ def get_chroma_db(embeddings,documents,path):
         console.print("Cargando base chroma")
         return Chroma(persist_directory=path,
                       embedding_function=embeddings)
+def main():
+    documents = load_documents(get_file_path())
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+
+    vectorstore_chroma = get_chroma_db(embeddings, documents, "chroma_docs")
+
+    console.print(f"[green]Documentos {len(documents)} cargados.[/green]")
     
+if __name__ == "__main__":
+    main()
