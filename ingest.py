@@ -19,7 +19,7 @@ def load_documents(file_path:str):
     return text_splitter.split_documents(data)
 
 def get_chroma_db(embeddings,documents,path,recreate_chroma_db):
-    if recreate_chroma_db:
+    if not recreate_chroma_db:
         console.print("Recreando CHROMA DB")
         return Chroma.from_documents(
             documents=documents,
