@@ -1,6 +1,13 @@
-'''from langchain.chains import ConversationalRetrievalChain, RetrievalQA
+from langchain.chains import ConversationalRetrievalChain, RetrievalQA
 from rich.console import Console
+from langchain.chat_models import ChatOpenAI
 
+def load_llm():
+    llm  = ChatOpenAI(
+        max_tokens=1000,
+        temperature=0.5
+        )
+    return llm
 def process_qa_query(query, retriever, llm):
     qa_chain = RetrievalQA.from_chain_type(
         llm=llm, chain_type="stuff", retriever=retriever
@@ -133,3 +140,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+'''

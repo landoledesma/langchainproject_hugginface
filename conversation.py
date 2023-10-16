@@ -2,9 +2,15 @@ from langchain.chat_models import ChatOpenAI
 from langchain.vectorstores import Chroma
 from rich.console import Console
 from utils import get_query_from_user
-from retriever import process_memory_query,process_qa_query
+from retriever import process_memory_query,process_qa_query,load_llm
 from ingest import get_chroma_db
+from langchain.embeddings import OpenAIEmbeddings
+
+
+DB_FAISS_PATH = "chroma_docs"
 console = Console()
+
+chat_type = "qa"
 
 def run_conversation(vectorstore, chat_type, llm):
 
@@ -41,19 +47,14 @@ def run_conversation(vectorstore, chat_type, llm):
 
         console.print(f"[red]IA:[/red] {response}")
 
-
-
-
 def main():
+    
+    
+    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+    db = Chroma.load_local(DB_FAISS_PATH, embeddings)
+    llm = load_llm()
 
-    llm = ChatOpenAI(
-        model_name="gpt-3.5-turbo",
-        temperature=0.2,
-        max_tokens=1000,
-    )
-
-    vectorstore_chroma = get_chroma_db(embeddings, documents, "chroma_docs")
-    run_conversation(vectorstore_chroma, chat_type, llm)
+    run_conversation(db, chat_type, llm)
 
 
 if __name__ == "__main__":
