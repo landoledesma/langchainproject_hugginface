@@ -1,11 +1,16 @@
-from langchain.chat_models import ChatOpenAI
 from langchain.vectorstores import Chroma
 from rich.console import Console
 from utils import get_query_from_user
 from retriever import process_memory_query,process_qa_query,load_llm
-from utils import get_file_path
+from utils import get_file_path,chroma_docs
 from langchain.embeddings import OpenAIEmbeddings
 from ingest import get_chroma_db,load_documents
+from dotenv import load_dotenv
+import os
+import time 
+
+load_dotenv("token.env")
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 console = Console()
 
@@ -39,6 +44,7 @@ def run_conversation(vectorstore, chat_type, llm):
 
         if chat_type == "qa":
             response = process_qa_query(query=query, retriever=retriever, llm=llm)
+
         elif chat_type == "memory_chat":
             response = process_memory_query(
                 query=query, retriever=retriever, llm=llm, chat_history=chat_history
@@ -47,9 +53,13 @@ def run_conversation(vectorstore, chat_type, llm):
         console.print(f"[red]IA:[/red] {response}")
 
 def main():
+    chroma_exist = chroma_docs()
+    
     documents = load_documents(get_file_path())
+
     embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-    vectorstore_chroma = get_chroma_db(embeddings, documents, "chroma_docs")
+    vectorstore_chroma = get_chroma_db(embeddings, documents, "chroma_docs",recreate_chroma_db=chroma_exist)
+    console.print(f"[green]Documentos {len(documents)} cargados.[/green]")
     
     llm = load_llm()
 

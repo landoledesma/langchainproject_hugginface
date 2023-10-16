@@ -62,3 +62,16 @@ def get_query_from_user() -> str:
     except EOFError:
         print("Error:Input no esperado. Intente de nuevo")
         return get_query_from_user()
+
+
+def chroma_docs():
+    # Obtiene la ruta del directorio donde se encuentra este script
+    carpeta_actual = os.path.dirname(os.path.abspath(__file__))
+
+    # Construye la ruta completa al directorio "chroma_docs" dentro de esa carpeta
+    path_chroma_docs = os.path.join(carpeta_actual, "chroma_docs")
+
+    # Verifica si el directorio existe
+    existe_chroma_docs = os.path.isdir(path_chroma_docs)
+
+    return existe_chroma_docs

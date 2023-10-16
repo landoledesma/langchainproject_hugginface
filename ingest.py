@@ -3,18 +3,8 @@ from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Chroma
 from jsonl_loader import DocsJSONLLoader
 from rich.console import Console
-from dotenv import load_dotenv
-from utils import get_file_path
-import os
-import time 
-
-load_dotenv("token.env")
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 console = Console()
-
-recreate_chroma_db = False
-
 
 def load_documents(file_path:str):
     loader = DocsJSONLLoader(file_path)
@@ -28,8 +18,7 @@ def load_documents(file_path:str):
 
     return text_splitter.split_documents(data)
 
-def get_chroma_db(embeddings,documents,path):
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
+def get_chroma_db(embeddings,documents,path,recreate_chroma_db):
     if recreate_chroma_db:
         console.print("Recreando CHROMA DB")
         return Chroma.from_documents(
@@ -41,13 +30,3 @@ def get_chroma_db(embeddings,documents,path):
         console.print("Cargando base chroma")
         return Chroma(persist_directory=path,
                       embedding_function=embeddings)
-def main():
-    documents = load_documents(get_file_path())
-    embeddings = OpenAIEmbeddings(model="text-embedding-ada-002")
-
-    
-
-    console.print(f"[green]Documentos {len(documents)} cargados.[/green]")
-    
-if __name__ == "__main__":
-    main()
